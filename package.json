@@ -1,0 +1,13 @@
+
+  {
+    "name": "checkpoint7",
+    "version": "1.0.0",
+    "scripts": {
+      "build": "npm run setup:server",
+      "setup:app": "npm run setup:server && npm run setup:client",
+      "setup:client": "cd checkPoint7.client && npm i",
+      "setup:server": "cd checkPoint7 && npm i",
+      "start": "node checkPoint7/index.js"
+    }
+  }
+  
