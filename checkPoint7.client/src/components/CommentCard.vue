@@ -35,7 +35,9 @@ export default {
     return {
       async deleteComment(commentId) {
         try {
-          await commentsService.deleteComment(commentId)
+          if (await Pop.confirm('Are You Sure!?')) {
+            await commentsService.deleteComment(commentId)
+          }
         } catch (error) {
           Pop.error(error)
         }

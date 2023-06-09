@@ -38,6 +38,15 @@ class EventsService {
     AppState.comments = res.data.map(c => new Comment(c))
     logger.log(AppState.comments, 'AppState COMMENTS')
   }
+
+  async cancelEvent(eventId) {
+    const event = AppState.events.find(e => e.id == eventId)
+    logger.log(event)
+    event.isCanceled = event.isCanceled != event.isCanceled
+
+    const res = await api.put(`api/events/${eventId}`, event)
+    logger.log(res.data, 'did the bool flip?')
+  }
 }
 
 export const eventsService = new EventsService()

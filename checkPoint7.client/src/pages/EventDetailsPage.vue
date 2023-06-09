@@ -7,17 +7,22 @@
       <EventDetailsCard :event="event" />
     </section>
     <section class="row my-2">
-      <img class="account-img" v-for="t in tickets" :key="t.accountId" :src="t.profile.picture" alt="">
+      <div class="col-2 d-flex justify-content-center align-items-center flex-column" v-for="t in tickets"
+        :key="t.accountId">
+        <img class="account-img" :src="t.profile.picture" alt="">
+        <p :t="t">{{ t.profile.name }}</p>
+      </div>
     </section>
     <div class="col-1"></div>
-    <section class="row">
-      <div class="col-2"></div>
-      <div class="col-8 d-flex justify-content-center" v-if="account">
-        <form @submit.prevent="createComment()">
+    <section class="row" v-if="user?.isAuthenticated">
+      <form @submit.prevent="createComment()">
+        <div class="col-8 offset-2 d-flex justify-content-center flex-column">
           <textarea name="" id="" cols="30" rows="10" v-model="editable.body" placeholder="Tell the people..."></textarea>
-          <button type="submit">Post Comment</button>
-        </form>
-      </div>
+          <div class="d-flex justify-content-center mt-2">
+            <button class="btn btn-success" type="submit">Post Comment</button>
+          </div>
+        </div>
+      </form>
     </section>
     <section class="row">
       <div class="col-8 elevation-3 my-2 offset-2" v-for="c in comments" :key="c.id">
@@ -37,9 +42,14 @@ import { logger } from "../utils/Logger.js";
 import { AppState } from "../AppState.js";
 import { computed } from "vue";
 import { commentsService } from "../services/CommentsService.js"
+import { Ticket } from "../models/Ticket.js";
 
 export default {
+  props: {
+    ticket: { type: Ticket, required: true }
+  },
   setup() {
+
     const route = useRoute()
     const editable = ref({})
 
@@ -81,6 +91,7 @@ export default {
       event: computed(() => AppState.activeEvent),
       tickets: computed(() => AppState.tickets),
       comments: computed(() => AppState.comments),
+      user: computed(() => AppState.user),
       editable,
 
       async createComment() {

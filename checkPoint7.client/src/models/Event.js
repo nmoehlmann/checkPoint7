@@ -9,5 +9,7 @@ export class Event {
     this.type = data.type
     this.creatorId = data.creatorId
     this.id = data.id
+    this.creator = data.creator
+    this.isCanceled = data.isCanceled
   }
 }
