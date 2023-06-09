@@ -1,41 +1,47 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <div class="home-card p-5 bg-white rounded elevation-3">
-      <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo"
-        class="rounded-circle">
-      <h1 class="my-5 bg-dark text-white p-3 rounded text-center">
-        Vue 3 Starter
-      </h1>
-    </div>
-  </div>
+  <header>
+    <Navbar />
+  </header>
+  <main class="container-fluid">
+    <section class="row">
+      hero img
+    </section>
+    <section class="row">
+      <div class="col-3" v-for="e in events" :key="e.id">
+        <EventCard :event="e"/>
+      </div>
+    </section>
+  </main>
 </template>
 
 <script>
+import { onMounted } from "vue";
+// import { logger } from "../utils/Logger.js";
+import Pop from "../utils/Pop.js";
+import { eventsService } from "../services/EventsService.js";
+import { computed } from "vue";
+import { AppState } from "../AppState.js";
+
 export default {
   setup() {
-    return {}
+    async function getAllEvents() {
+      try {
+        // logger.log('getting events')
+        await eventsService.getAllEvents()
+
+      } catch (error) {
+        Pop.error(error)
+      }
+    }
+
+    onMounted(() => getAllEvents())
+    return {
+      events: computed(() => AppState.events)
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
-.home {
-  display: grid;
-  height: 80vh;
-  place-content: center;
-  text-align: center;
-  user-select: none;
 
-  .home-card {
-    width: 50vw;
-
-    >img {
-      height: 200px;
-      max-width: 200px;
-      width: 100%;
-      object-fit: contain;
-      object-position: center;
-    }
-  }
-}
 </style>
