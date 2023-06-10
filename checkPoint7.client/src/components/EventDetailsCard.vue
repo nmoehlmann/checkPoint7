@@ -2,7 +2,10 @@
   <main class="container-fluid elevation-3" v-if="event">
     <section class="row">
       <div class="col-4 p-4">
-        <img v-if="currentEvent.capacity != 0" class="img-fluid" :src="event?.coverImg" alt="event-coverImg">
+        <img v-if="currentEvent.isCanceled == false" class="img-fluid" :src="event?.coverImg" alt="event-coverImg">
+        <img class="img-fluid" v-if="currentEvent.isCanceled == true" src="https://pngimg.com/d/sold_out_PNG73.png"
+          alt="">
+        <p class="fs-2 fw-bold text-center">{{ event.type }}</p>
       </div>
       <div class="col-8">
         <section class="row">
@@ -19,13 +22,20 @@
         </article>
         <section class="row">
           <div class="col-6">
-            <p>Tickets Remaining: {{ currentEvent.capacity }}</p>
+            <!-- NOTE make this number persist through page reload -->
+            <p>Tickets Remaining: {{ currentEvent.capacity - currentEvent.ticketCount }}</p>
+            <h1 v-if="currentEvent.capacity == currentEvent.ticketCount" class="text-danger">SOLD OUT!!!!</h1>
           </div>
           <div class="col-6 d-flex justify-content-around" v-if="user?.isAuthenticated">
-            <button v-if="!isAttending" @click="createTicket()" class="btn btn-primary">Attend</button>
-            <button v-if="isAttending" @click="deleteTicket()" class="btn btn-danger">Leave</button>
-            <button v-if="event.creator.id == account.id" @click="cancelEvent(event.id)"
+            <button v-if="!isAttending && currentEvent.isCanceled == false" @click="createTicket()"
+              class="btn btn-primary">Attend</button>
+            <button v-if="isAttending && currentEvent.isCanceled == false" @click="deleteTicket()"
+              class="btn btn-danger">Leave</button>
+            <!-- TODO make everything render when button is clicked -->
+            <button v-if="event.creator.id == account.id && event.isCanceled == false" @click="cancelEvent(event.id)"
               class="btn btn-dark">Cancel</button>
+            <!-- <button v-if="event.creator.id == account.id && event.isCanceled == true" @click="cancelEvent(event.id)"
+              class="btn btn-success">ReCreate</button> -->
           </div>
         </section>
       </div>
@@ -42,6 +52,7 @@ import { computed } from "vue"
 import { AppState } from "../AppState.js"
 import { eventsService } from "../services/EventsService.js"
 import { logger } from "../utils/Logger.js"
+import { router } from "../router.js"
 
 export default {
   props: {

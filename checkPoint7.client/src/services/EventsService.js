@@ -42,10 +42,11 @@ class EventsService {
   async cancelEvent(eventId) {
     const event = AppState.events.find(e => e.id == eventId)
     logger.log(event)
-    event.isCanceled = event.isCanceled != event.isCanceled
+    event.isCanceled != event.isCanceled
 
-    const res = await api.put(`api/events/${eventId}`, event)
+    const res = await api.delete(`api/events/${eventId}`, event)
     logger.log(res.data, 'did the bool flip?')
+    AppState.activeEvent = new Event(res.data)
   }
 }
 

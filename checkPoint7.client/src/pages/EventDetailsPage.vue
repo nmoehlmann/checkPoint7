@@ -82,16 +82,28 @@ export default {
       }
     }
 
+    async function getAllEvents() {
+      try {
+        // logger.log('getting events')
+        await eventsService.getAllEvents()
+
+      } catch (error) {
+        Pop.error(error)
+      }
+    }
+
     onMounted(() => {
       getEventById()
       getEventTickets()
       getEventComments()
+      getAllEvents()
     })
     return {
       event: computed(() => AppState.activeEvent),
       tickets: computed(() => AppState.tickets),
       comments: computed(() => AppState.comments),
       user: computed(() => AppState.user),
+      events: computed(() => AppState.events),
       editable,
 
       async createComment() {

@@ -16,7 +16,7 @@
         <section class="row">
           <div class="col-6 d-flex justify-content-center gap-3">
             <label for="startDate">Start Date:</label>
-            <input type="text" name="startDate" placeholder="Start Date" v-model="editable.startDate">
+            <input type="text" name="startDate" placeholder="mm/dd/yyyy" v-model="editable.startDate">
           </div>
           <div class="col-6 d-flex justify-content-center gap-3">
             <label for="capacity">Total Capacity:</label>
@@ -73,6 +73,7 @@ export default {
           // debugger
           const formData = editable.value
           const newEvent = await eventsService.createEvent(formData)
+          editable.value = {}
           Modal.getOrCreateInstance('#createEvent').hide()
           router.push({ name: 'EventDetails', params: { id: newEvent.id } })
         } catch (error) {

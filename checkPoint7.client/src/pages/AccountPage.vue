@@ -3,7 +3,7 @@
     <Navbar />
   </header>
   <section class="row text-center">
-    <h1>My Events</h1>
+    <h1>My Event Tickets</h1>
   </section>
   <main class="container-fluid">
     <section class="row" v-for="t in myTickets" :key="t.creator">

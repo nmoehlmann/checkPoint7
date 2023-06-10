@@ -7,8 +7,8 @@ class TicketsService {
   async createTicket(eventId) {
     const res = await api.post(`api/tickets/`, {eventId})
     logger.log('CREATING TICKET', res.data)
-    AppState.tickets.push(new Ticket(res.data))
     AppState.activeEvent.capacity--
+    AppState.tickets.push(new Ticket(res.data))
   }
 
   async getMyTickets() {
@@ -24,8 +24,8 @@ class TicketsService {
     if(AppState.myTickets) {
       AppState.myTickets = AppState.myTickets.filter(t => t.id != ticketId)
     }
-    AppState.tickets = AppState.tickets.filter(t => t.id != ticketId)
     AppState.activeEvent.capacity++
+    AppState.tickets = AppState.tickets.filter(t => t.id != ticketId)
   }
 
 }

@@ -1,6 +1,6 @@
 <template>
   <router-link :to="{ name: 'EventDetails', params: { id: event.id } }">
-    <main class="elevation-3 event-coverImg d-flex flex-column justify-content-end">
+    <main class="elevation-3 event-coverImg d-flex flex-column justify-content-end my-2">
       <section class="row blurCard text-light">
         <div class="col-8">
           <p>{{ event.name }}</p>
@@ -8,7 +8,7 @@
           <p>{{ event.startDate }}</p>
         </div>
         <div class="col-4">
-          <p>{{ event.capacity }}</p>
+          <p>Capacity: {{ event.capacity }}</p>
         </div>
       </section>
     </main>
